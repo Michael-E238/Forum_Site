@@ -6,10 +6,10 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    full_name = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
-    def set_password(self, password):
+    def __init__(self, username, password):
+        self.username = username
         self.password = generate_password_hash(password)
 
     def check_password(self, password):

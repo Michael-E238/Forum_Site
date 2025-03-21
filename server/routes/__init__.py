@@ -1,1 +1,1 @@
-from.auth import auth_blueprint
+from routes.auth import auth_blueprint
