@@ -9,8 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "install": "cd sever && python3 && cd ../client && bun install",
-    "dev": "concurrently \"cd server && python3 app.py\" \"wait-on tcp:3000 && cd client && bun run dev\"",
+    "install": "cd server && pip3 install -r requirements.txt && cd ../client && bun i",
+    "dev": "concurrently \"cd server && python3 app.py\" \"wait-on tcp:5000 && cd client && bun run dev\"",
     "start": "bun run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
