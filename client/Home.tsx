@@ -15,7 +15,7 @@ return (
                                             <Col>
                                                 <Card.Body>
                                                     <Card.Title>
-                                                        <h1 className="titel">Welcome To The Old School Internet</h1>
+                                                        <h1 className="titel">Welcome To The Old Internet</h1>
                                                     </Card.Title>
                                                     </Card.Body>
                                                 </Col>
