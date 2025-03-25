@@ -3,23 +3,24 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
-
-    "name": "develop",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "build": "npx tsc",
-      "start": "bun run dev",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-      "@types/inquirer": "^9.0.7",
-      "typescript": "^5.4.5"
-    }
+  "name": "develop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "install": "cd sever && python3 && cd ../client && bun install",
+    "dev": "concurrently \"cd server && python3 app.py\" \"wait-on tcp:3000 && cd client && bun run dev\"",
+    "start": "bun run dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "concurrently": "^9.1.2",
+    "typescript": "^5.4.5",
+    "wait-on": "^8.0.3"
   }
-  
-
+}
