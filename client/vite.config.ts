@@ -12,7 +12,7 @@ export default defineConfig({
       '/graphql': {
         // This is the target URL for the proxy
         // You can change this to your backend server URL, the python server port
-        target: 'http://localhost:3001',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
       },
