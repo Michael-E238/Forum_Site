@@ -18,7 +18,7 @@ const threadsData: Thread[] = [
         content: 'Discuss your favorite action/adventure games here!',
         createdAt: '2022-01-01',
         genre: 'Action/Adventure',
-        color: '#FF9900',
+        color: '#1b263b',
         url: '/threads/1',
       },
       {
@@ -27,7 +27,7 @@ const threadsData: Thread[] = [
         content: 'Talk about your favorite RPGs and share your experiences!',
         createdAt: '2022-01-02',
         genre: 'RPG',
-        color: '#0099CC',
+        color: '#1b263b',
         url: '/threads/2',
       },
       {
@@ -36,7 +36,7 @@ const threadsData: Thread[] = [
         content: 'Discuss your favorite FPS games and strategies!',
         createdAt: '2022-01-03',
         genre: 'FPS',
-        color: '#FF0000',
+        color: '#1b263b',
         url: '/threads/3',
       },
       {
@@ -45,7 +45,7 @@ const threadsData: Thread[] = [
         content: 'Talk about your favorite sports games and teams!',
         createdAt: '2022-01-04',
         genre: 'Sports',
-        color: '#00CC00',
+        color: '#1b263b',
         url: '/threads/4',
       },
       {
@@ -54,7 +54,7 @@ const threadsData: Thread[] = [
         content: 'Discuss your favorite strategy games and tactics!',
         createdAt: '2022-01-05',
         genre: 'Strategy',
-        color: '#CCCC00',
+        color: '#1b263b',
         url: '/threads/5',
       },
       {
@@ -63,7 +63,7 @@ const threadsData: Thread[] = [
         content: 'Talk about your favorite simulation games and experiences!',
         createdAt: '2022-01-06',
         genre: 'Simulation',
-        color: '#6600CC',
+        color: '#1b263b',
         url: '/threads/6',
       },
 ];
@@ -79,16 +79,28 @@ const Home: React.FC = () => {
     <Container fluid>
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6}>
+
+        <Card>
+            <Card.Title style={{ color: 'white' }}>
           <h1 className="title">Welcome To The Old Internet</h1>
+          </Card.Title>
+          </Card>
         </Col>
       </Row>
       <Row>
         {threadsData.map((thread) => (
           <Col key={thread.id} xs={6} sm={4} md={3} lg={2}>
-            <Card style={{ backgroundColor: thread.color, borderColor: thread.color }}>
+
+            <Card style={{ 
+                backgroundColor: thread.color, 
+                borderColor: thread.color,
+                border: '2px solid white',
+                borderRadius: '8px' 
+                }}>
               <Card.Body>
                 <Card.Title style={{ color: 'white' }}>
-                  <a href="#" onClick={() => handleThreadClick(thread)}>
+                  <a href="#" onClick={() => handleThreadClick(thread)}
+                    style={{ color: 'yellow', textDecoration: 'none' }}>
                     {thread.title}
                   </a>
                 </Card.Title>
@@ -104,6 +116,13 @@ const Home: React.FC = () => {
           <Col xs={12}>
             <Card>
               <Card.Body>
+              <Card 
+                style={{ 
+                    backgroundColor: selectedThread.color, 
+                    border: '2px solid white',
+                    borderRadius: '8px' 
+                }}
+                ></Card>
                 <Card.Title style={{ color: 'white' }}>{selectedThread.title}</Card.Title>
                 <Card.Text style={{ color: 'white' }}>{selectedThread.content}</Card.Text>
                 <Card.Text style={{ color: 'white' }}>Created at: {selectedThread.createdAt}</Card.Text>
