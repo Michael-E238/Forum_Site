@@ -34,3 +34,11 @@ class Post(db.Model):
     thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())

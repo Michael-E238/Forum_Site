@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify, render_template, redirect
+from flask import Flask, request, jsonify, send_from_directory
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from config import Config
-from models.models import User, db, Category, Thread, Post
+from models.models import User, db, Category, Thread, Post, Topic
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -11,30 +11,48 @@ jwt = JWTManager(app)
 # Define routes for Nav bar links
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return send_from_directory('Client/build', 'index.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/action-adventure')
+def action_adventure():
+    print("Action Adventure route called")
+    return send_from_directory('Client/build', 'index.html')
+
+# Define routes for Action Adventure topics
+@app.route('/action-adventure/topics', methods=['GET'])
+def get_action_adventure_topics():
+    # Query the database for topics related to action-adventure games
+    topics = Topic.query.all()
+    return jsonify([topic.title for topic in topics])
+
+@app.route('/action-adventure/topics', methods=['POST'])
+def create_action_adventure_topic():
+    # Create a new topic related to action-adventure games
+    topic_title = request.json.get('title')
+    topic_content = request.json.get('content')
+    topic = Topic(title=topic_title, content=topic_content)
+    db.session.add(topic)
+    db.session.commit()
+    return jsonify({'message': 'Topic created successfully'})
 
 # Define routes for Users
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return send_from_directory('Client/build', 'index.html')
     elif request.method == 'POST':
         username = request.form.get('username', None)
         password = request.form.get('password', None)
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             access_token = create_access_token(identity=username)
-            return redirect(url_for('protected'))
+            return jsonify({'access_token': access_token})
         return jsonify({'msg': 'Bad username or password'}), 401
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        return render_template('register.html')
+        return send_from_directory('Client/build', 'index.html')
     elif request.method == 'POST':
         try:
             username = request.form.get('username', None)
@@ -47,16 +65,16 @@ def register():
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
-            return redirect(url_for('login'))
+            return jsonify({'message': 'User created successfully'})
         except Exception as e:
             print(f'An error occurred: {e}')
             return jsonify({'msg': f'An error occurred: {e}'}), 500
-    
+
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    return render_template('protected.html', logged_in_as=current_user)
+    return jsonify({'logged_in_as': current_user})
 
 # Define routes for categories
 @app.route('/categories', methods=['GET'])
@@ -109,5 +127,5 @@ if __name__ == "__main__":
         db.create_all()
     try:
         app.run(debug=True)
-    except Exception as e:
+    except Exception as e: 
         print(f"An error occurred: {e}")
