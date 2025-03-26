@@ -79,6 +79,7 @@ const Home: React.FC = () => {
     <Container fluid>
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6}>
+
         <Card>
             <Card.Title style={{ color: 'white' }}>
           <h1 className="title">Welcome To The Old Internet</h1>
@@ -89,6 +90,7 @@ const Home: React.FC = () => {
       <Row>
         {threadsData.map((thread) => (
           <Col key={thread.id} xs={6} sm={4} md={3} lg={2}>
+
             <Card style={{ 
                 backgroundColor: thread.color, 
                 borderColor: thread.color,
