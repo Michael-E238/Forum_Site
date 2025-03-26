@@ -1,5 +1,6 @@
 import React, { useState } from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
+import Nav_bar from "../components/Nav_Bar";
 
 interface Thread {
   id: number;
@@ -81,6 +82,7 @@ const Home: React.FC = () => {
         <Col xs={12} md={8} lg={6}>
           <h1 className="title">Welcome To The Old Internet</h1>
         </Col>
+        <Nav_bar/>
       </Row>
       <Row>
         {threadsData.map((thread) => (
