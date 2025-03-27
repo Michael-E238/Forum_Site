@@ -12,8 +12,9 @@ The "Welcome to the Old Internet" App is a full-stack web application designed t
 - **Protected Routes**: Secure endpoints accessible only to authenticated users.
 
 ### 2. Forum Management
-- **Retrieve Specific Forums**: Fetches a specific thread by selecting the corresponding topic.
+- **Retrieve Specific Threads**: Fetches a specific thread by selecting the corresponding topic.
 - **Add Forum Posts**: Create new posts to add to the specific thread in which they are relevant.
+- **Compartamentalizing Unique Threads**: Creating clear distinctions between multiple threads to prevent overlap from unrelated discussion topics.
 
 ### 3. Security
 - **Password Encryption**: All passwords are hashed using `bcrypt`.
@@ -25,6 +26,32 @@ The "Welcome to the Old Internet" App is a full-stack web application designed t
 ### Backend:
 - **JWT**: Secure authentication mechanism.
 - **Flask**: Fullstack variant of Python, handling the server data.
+
+### Database:
+- **Relational Database**: Compatible with PostgreSQL/MySQL (configured using GraphQL).
+
+---
+
+## API Endpoints
+
+### User Routes
+| Method | Endpoint       | Description                 | Auth Required |
+|--------|----------------|-----------------------------|---------------|
+| POST   | `/register`    | User registration           | Yes           |
+| GET    | `/register`    | User registration           | No            |
+| POST   | `/login`       | User login                  | Yes           |
+| GET    | `/login`       | User login                  | No            |
+| GET    | `/protected`   | Example of a protected route| Yes           |
+
+### Forum Routes
+| Method | Endpoint       | Description                 | Auth Required |
+|--------|----------------|-----------------------------|---------------|
+| GET    | `/categories`  | Retrieve all categories     | No            |
+| POST   | `/categories`  | Create a new category       | No            |
+| GET    | `/threads`     | Retrieve all threads        | No            |
+| POST   | `/threads`     | Create a new thread         | No            |
+| GET    | `/posts`       | Retrieve all thread posts   | No            |
+| POST   | `/posts`       | Create a new post           | No            |
 
 ---
 
