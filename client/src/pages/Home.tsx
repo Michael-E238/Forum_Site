@@ -1,6 +1,7 @@
 import React, { useState } from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
 import myImage from "../assets/Pixel-Pit.png";
+import styled from "styled-components";
 
 interface Thread {
   id: number;
@@ -12,7 +13,12 @@ interface Thread {
   url: string;
 }
 
-
+const Divider = styled.div`
+  width: 100%;
+  height: 5px;
+  background-color: #fca311;
+  margin: 20px 0;
+`;
 
 const threadsData: Thread[] = [
     {
@@ -77,6 +83,7 @@ const Home: React.FC = () => {
   const handleThreadClick = (thread: Thread) => {
     setSelectedThread(thread);
   };
+
     return (
       <div>
         <Container fluid>
@@ -160,37 +167,37 @@ const Home: React.FC = () => {
             </Row>
           )}
         </Container>
+
+        const Divider = () = <div className="divider" />;
+        const MyComponent: React.FC = () = {
+    <>
+      <Container>
+        {/* Content */}
+      </Container>
+      <Divider />
+      <div className="container">
+        {/* More content */}
+      </div>
+    </>
+
+};
+
+
         <div className="container">
           <footer className="py-3 my-4">
             <ul className="nav justify-content-center border-bottom pb-3 mb-3">
-              <li className="nav-item">
-                <a href="#" className="nav-link px-2 text-body-secondary">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link px-2 text-body-secondary">
-                  Features
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link px-2 text-body-secondary">
-                  Pricing
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link px-2 text-body-secondary">
-                  FAQs
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link px-2 text-body-secondary">
-                  About
-                </a>
-              </li>
+            
+              <div className="image-container">
+            <img
+              src={myImage}
+              alt="My Image"
+              className="foreground-image"
+              style={{ width: '100px', height: 'auto' }}
+            />
+            </div>
             </ul>
-            <p className="text-center text-body-secondary">
-              &copy; 2024 Company, Inc
+            <p className="text-center text-body-secondary" style={{ color: "#fca311" }}>
+              &copy;  Pixel Pit, 2025 Company
             </p>
           </footer>
         </div>
