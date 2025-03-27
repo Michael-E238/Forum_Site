@@ -1,29 +1,32 @@
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ReactDOM from'react-dom/client';
+import { createBrowserRouter, RouterProvider } from'react-router-dom';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
-import App from './App';
 import Home from './pages/Home';
+import ActionAdventurePage from './pages/ActionAdventurePage';
 
+const client = new ApolloClient({
+  uri: '/graphql',
+  cache: new InMemoryCache(),
+});
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    //errorElement: <NotFound />,
-    children: [
-      {
-        index: true,
-        element: <Home />
-      }
-    ],
+    element: <Home />,
+  },
+  {
+    path: '/action-adventure',
+    element: <ActionAdventurePage />,
   },
 ]);
 
 const rootElement = document.getElementById('root');
 
-if(rootElement) {
+if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
-    <RouterProvider router={router} />
+    <ApolloProvider client={client}>
+      <RouterProvider router={router} />
+    </ApolloProvider>
   );
 }
-
