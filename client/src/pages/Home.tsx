@@ -1,5 +1,5 @@
 import React, { useState } from'react';
-import { Row, Col, Card, Container } from'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 import Nav_bar from "../components/Nav_Bar";
 
 interface Thread {
