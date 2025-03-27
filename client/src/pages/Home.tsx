@@ -1,6 +1,6 @@
 import React, { useState } from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
-import myImage from "../assets/Pixel-Pit.png";
+//import myImage from "../assets/Pixel-Pit.png";
 import styled from "styled-components";
 
 interface Thread {
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
         <Container fluid>
           <div className="image-container">
             <img
-              src={myImage}
+              //src={myImage}
               alt="My Image"
               className="foreground-image"
               style={{ width: '300px', height: 'auto' }}
@@ -264,7 +264,7 @@ const Home: React.FC = () => {
             
               <div className="image-container">
             <img
-              src={myImage}
+              //src={myImage}
               alt="My Image"
               className="foreground-image"
               style={{ width: '100px', height: 'auto' }}
