@@ -12,6 +12,8 @@ interface Thread {
   url: string;
 }
 
+
+
 const threadsData: Thread[] = [
     {
         id: 1,
@@ -75,71 +77,126 @@ const Home: React.FC = () => {
   const handleThreadClick = (thread: Thread) => {
     setSelectedThread(thread);
   };
-
-  return (
-    <Container fluid>
-       <div style={{ backgroundImage: `url(${myImage})`, backgroundSize: 'small' }}>
-  {/* Content here */}
-</div>
-      <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-
-        <Card>
-            <Card.Title style={{ color: 'white' }}>
-          <h1 className="title">Welcome To Pixel Pit</h1>
-          </Card.Title>
-          <Card.Title style={{ color: 'Bone' }}>
-          <h2 className="title">The Internet Before Y2K</h2>
-          </Card.Title>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        {threadsData.map((thread) => (
-          <Col key={thread.id} xs={6} sm={4} md={3} lg={2}>
-
-            <Card style={{ 
-                backgroundColor: thread.color, 
-                borderColor: thread.color,
-                border: '2px solid white',
-                borderRadius: '8px' 
-                }}>
-              <Card.Body>
-                <Card.Title style={{ color: 'white' }}>
-                  <a href="#" onClick={() => handleThreadClick(thread)}
-                    style={{ color: 'Bone', textDecoration: 'none' }}>
-                    {thread.title}
-                  </a>
+    return (
+      <div>
+        <Container fluid>
+          <div className="image-container">
+            <img
+              src={myImage}
+              alt="My Image"
+              className="foreground-image"
+              style={{ width: '300px', height: 'auto' }}
+            />
+            {/* Content here */}
+          </div>
+          <Row className="justify-content-center">
+            <Col xs={12} md={8} lg={6}>
+              <Card>
+                <Card.Title style={{ color: '#ffffff' }}>
+                  <h1 className="title">Welcome To Pixel Pit</h1>
                 </Card.Title>
-                <Card.Text style={{ color: 'white' }}>{thread.content.substring(0, 100)}...</Card.Text>
-                <Card.Text style={{ color: 'white' }}>Created at: {thread.createdAt}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-      {selectedThread && (
-        <Row>
-          <Col xs={12}>
-            <Card>
-              <Card.Body>
-              <Card 
-                style={{ 
-                    backgroundColor: selectedThread.color, 
-                    border: '2px solid white',
-                    borderRadius: '8px' 
-                }}
-                ></Card>
-                <Card.Title style={{ color: 'white' }}>{selectedThread.title}</Card.Title>
-                <Card.Text style={{ color: 'white' }}>{selectedThread.content}</Card.Text>
-                <Card.Text style={{ color: 'white' }}>Created at: {selectedThread.createdAt}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
-    </Container>
-  );
-};
+                <Card.Title style={{ color: '#fca311' }}>
+                  <h2 className="title">The Internet Before Y2K</h2>
+                </Card.Title>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            {threadsData.map((thread) => (
+              <Col key={thread.id} xs={6} sm={4} md={3} lg={2}>
+                <Card
+                  style={{
+                    backgroundColor: thread.color,
+                    borderColor: thread.color,
+                    border: '2px solid #ffffff',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title style={{ color: '#ffffff' }}>
+                      <a
+                        href="#"
+                        onClick={() => handleThreadClick(thread)}
+                        style={{ color: '#fca311', textDecoration: 'none' }}
+                      >
+                        {thread.title}
+                      </a>
+                    </Card.Title>
+                    <Card.Text style={{ color: '#ffffff' }}>
+                      {thread.content.substring(0, 100)}...
+                    </Card.Text>
+                    <Card.Text style={{ color: '#ffffff' }}>
+                      Created at: {thread.createdAt}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          {selectedThread && (
+            <Row>
+              <Col xs={12}>
+                <Card>
+                  <Card.Body>
+                    <Card
+                      style={{
+                        backgroundColor: selectedThread.color,
+                        border: '2px solid white',
+                        borderRadius: '8px',
+                      }}
+                    ></Card>
+                    <Card.Title style={{ color: '#ffffff' }}>
+                      {selectedThread.title}
+                    </Card.Title>
+                    <Card.Text style={{ color: '#ffffff' }}>
+                      {selectedThread.content}
+                    </Card.Text>
+                    <Card.Text style={{ color: '#ffffff' }}>
+                      Created at: {selectedThread.createdAt}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          )}
+        </Container>
+        <div className="container">
+          <footer className="py-3 my-4">
+            <ul className="nav justify-content-center border-bottom pb-3 mb-3">
+              <li className="nav-item">
+                <a href="#" className="nav-link px-2 text-body-secondary">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#" className="nav-link px-2 text-body-secondary">
+                  Features
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#" className="nav-link px-2 text-body-secondary">
+                  Pricing
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#" className="nav-link px-2 text-body-secondary">
+                  FAQs
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#" className="nav-link px-2 text-body-secondary">
+                  About
+                </a>
+              </li>
+            </ul>
+            <p className="text-center text-body-secondary">
+              &copy; 2024 Company, Inc
+            </p>
+          </footer>
+        </div>
+      </div>
+    );
+  };
 
-export default Home;
+  
+  export default Home;
