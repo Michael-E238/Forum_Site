@@ -3,6 +3,7 @@ import { Row, Col, Card, Container } from'react-bootstrap';
 import myImage from "../assets/Pixel-Pit.png";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
+import Nav_bar from '../components/Nav_Bar';
 
 interface Thread {
   id: number;
@@ -88,6 +89,8 @@ const Home: React.FC = () => {
 
     return (
       <div style = {{ backgroundColor: '#1b263b', color: '#ffffff' }}>
+        <Nav_bar />
+        <div style={{ marginBottom: "40px" }}></div> {/* Adds space below */}
         <Container fluid>
           <div className="image-container">
             <img
