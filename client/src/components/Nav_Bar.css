@@ -1,0 +1,46 @@
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+Container {
+    border-width: 3px;
+    border-color: azure;
+    background-color: cornsilk;
+    color: yellow;
+}
+
+.Broad_nav {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 40px;
+    background-color: indigo;
+}
+
+.bg-body-tertiary {
+    margin-right: 50px;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.navi {
+    color: lightgoldenrodyellow;
+    text-decoration: none;
+}
+
+.navi:hover {
+    color: lightsalmon;
+    font-weight: bold;
+    text-decoration: underline;
+}
