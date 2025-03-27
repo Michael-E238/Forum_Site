@@ -8,14 +8,6 @@ app.config.from_object(Config)
 db.init_app(app)
 jwt = JWTManager(app)
 
-# Define routes for Nav bar links
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
 # Define routes for Users
 @app.route('/login', methods=['GET', 'POST'])
