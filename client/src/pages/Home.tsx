@@ -1,5 +1,6 @@
 import React, { useState } from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
+import myImage from "./assets/Pixel Pit.png";
 
 interface Thread {
   id: number;
@@ -77,10 +78,9 @@ const Home: React.FC = () => {
 
   return (
     <Container fluid>
-       <div
-                className='p-5 text-center bg-image'
-                style={{ backgroundImage: "url('file:///Users/matthewunrein/Documents/Pixel%20Pite.png')", height: 400 }}
-            ></div>
+       <div style={{ backgroundImage: `url(${myImage})`, backgroundSize: 'cover' }}>
+  {/* Content here */}
+</div>
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6}>
 
