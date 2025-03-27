@@ -1,9 +1,13 @@
 import React from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
+import myImage from "../assets/Pixel-Pit.png";
+import styled from "styled-components";
+
 
 
 const Home: React.FC = () => {
   return (
+    <div>
     <Container fluid>
        
       <Row className="justify-content-center">
@@ -27,12 +31,43 @@ const Home: React.FC = () => {
               </Card.Body>
             </Card>
           </Col>
-  = <div
-              className='p-5 text-center bg-image'
-              style={{ backgroundImage: "url('file:///Users/matthewunrein/Downloads/alin-andersen-X-wKVg193Ao-unsplash.jpg')", height: 400 }}
-          ></div>
       </Row>
     </Container>
-  );
-}
+
+ <div style={{ marginBottom: "40px" }}></div> {/* Adds space below */}
+
+ <>
+ 
+   <Container>
+     {/* Content */}
+   </Container>
+  
+   <div className="container">
+     {/* More content */}
+   </div>
+ </>
+
+ <div style={{ marginBottom: "40px" }}></div> {/* Adds space below */}
+
+     <div className="container">
+       <footer className="py-3 my-4">
+         <ul className="nav justify-content-center border-bottom pb-3 mb-3">
+         
+           <div className="image-container">
+         <img
+           src={myImage}
+           alt="My Image"
+           className="foreground-image"
+           style={{ width: '100px', height: 'auto' }}
+         />
+         </div>
+         </ul>
+         <p className="text-center text-body-secondary" style={{ color: "#fca311" }}>
+           &copy;  Pixel Pit, 2025 Company
+         </p>
+       </footer>
+     </div>
+   </div>
+ );
+};
 export default Home;
