@@ -77,12 +77,19 @@ const Home: React.FC = () => {
 
   return (
     <Container fluid>
+       <div
+                className='p-5 text-center bg-image'
+                style={{ backgroundImage: "url('file:///Users/matthewunrein/Documents/Pixel%20Pite.png')", height: 400 }}
+            ></div>
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6}>
 
         <Card>
             <Card.Title style={{ color: 'white' }}>
-          <h1 className="title">Welcome To The Old Internet</h1>
+          <h1 className="title">Welcome To Pixel Pit</h1>
+          </Card.Title>
+          <Card.Title style={{ color: 'Bone' }}>
+          <h2 className="title">The Internet Before Y2K</h2>
           </Card.Title>
           </Card>
         </Col>
@@ -100,7 +107,7 @@ const Home: React.FC = () => {
               <Card.Body>
                 <Card.Title style={{ color: 'white' }}>
                   <a href="#" onClick={() => handleThreadClick(thread)}
-                    style={{ color: 'yellow', textDecoration: 'none' }}>
+                    style={{ color: 'Bone', textDecoration: 'none' }}>
                     {thread.title}
                   </a>
                 </Card.Title>
