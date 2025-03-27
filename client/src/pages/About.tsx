@@ -1,9 +1,14 @@
 import React from'react';
 import { Row, Col, Card, Container } from'react-bootstrap';
-import myImage from "../assets/Pixel-Pit.png";
+//import myImage from "../assets/Pixel-Pit.png";
 import styled from "styled-components";
 
-
+const Divider = styled.div`
+  width: 100%;
+  height: 5px;
+  background-color: #fca311;
+  margin: 20px 0;
+`;
 
 const Home: React.FC = () => {
   return (
@@ -17,7 +22,10 @@ const Home: React.FC = () => {
       </Row>
       <Row>
           <Col xs={6} sm={4} md={3} lg={2}>
-            <Card style={{ backgroundColor: '#FF9900', borderColor: '#FF9900' }}>
+            <Card style={{
+                    border: '2px solid #ffffff',
+                    borderRadius: '8px',
+                  }}>
               <Card.Body>
               <Card.Text>
                 <p className="body">Welcome to Form, the ultimate platform for 
@@ -41,7 +49,7 @@ const Home: React.FC = () => {
    <Container>
      {/* Content */}
    </Container>
-  
+  <Divider />
    <div className="container">
      {/* More content */}
    </div>
@@ -55,7 +63,7 @@ const Home: React.FC = () => {
          
            <div className="image-container">
          <img
-           src={myImage}
+           //src={myImage}
            alt="My Image"
            className="foreground-image"
            style={{ width: '100px', height: 'auto' }}
