@@ -87,7 +87,7 @@ const Home: React.FC = () => {
   };
 
     return (
-      <div>
+      <div style = {{ backgroundColor: '#1b263b', color: '#ffffff' }}>
         <Container fluid>
           <div className="image-container">
             <img
