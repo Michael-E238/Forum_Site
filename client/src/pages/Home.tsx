@@ -168,8 +168,8 @@ const Home: React.FC = () => {
           )}
         </Container>
 
-        const Divider = () = <div className="divider" />;
-        const MyComponent: React.FC = () = {
+        <div style={{ marginBottom: "40px" }}></div> {/* Adds space below */}
+
     <>
       <Container>
         {/* Content */}
@@ -180,8 +180,7 @@ const Home: React.FC = () => {
       </div>
     </>
 
-};
-
+    <div style={{ marginBottom: "40px" }}></div> {/* Adds space below */}
 
         <div className="container">
           <footer className="py-3 my-4">
