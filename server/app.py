@@ -1,143 +1,162 @@
-from flask import Flask, request, jsonify, send_from_directory
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
-from config import Config
-from models.models import User, db, Category, Thread, Post, Topic
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config.from_object(Config)
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///database.db'
+app.config['JWT_SECRET_KEY'] ='super-secret'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600  # 1 hour
+db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
-# Define routes for Nav bar links
-@app.route('/')
-def home():
-    return send_from_directory('Client/build', 'index.html')
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(100), nullable=False)
 
-@app.route('/action-adventure')
-def action_adventure():
-    print("Action Adventure route called")
-    return send_from_directory('Client/build', 'index.html')
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
-# Define routes for Action Adventure topics
-@app.route('/action-adventure/topics', methods=['GET'])
-def get_action_adventure_topics():
-    # Query the database for topics related to action-adventure games
-    topics = Topic.query.all()
-    return jsonify([{'id': topic.id, 'title': topic.title, 'content': topic.content, 'createdAt': topic.createdAt, 'comments': []} for topic in topics])
+# functional Thread and comment models
+class Thread(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('threads', lazy=True))
 
-@app.route('/action-adventure/topics', methods=['POST'])
-def create_action_adventure_topic():
-    # Create a new topic related to action-adventure games
-    topic_title = request.json.get('title')
-    topic_content = request.json.get('content')
-    topic = Topic(title=topic_title, content=topic_content)
-    db.session.add(topic)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'user_id': self.user_id
+        }
+
+    def to_dict(self):
+        return {
+            'id': getattr(self, 'id', None),
+            'title': getattr(self, 'title', None),
+            'content': getattr(self, 'content', None),
+            'user_id': getattr(self, 'user_id', None)
+        }
+    
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    thread = db.relationship('Thread', backref=db.backref('comments', lazy=True))
+    user = db.relationship('User', backref=db.backref('comments', lazy=True))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'thread_id': self.thread_id,
+            'user_id': self.user_id
+        }
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+# method for users to create and login to accounts    
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    hashed_password = generate_password_hash(password)
+    new_user = User(username=username, password=hashed_password)
+    db.session.add(new_user)
     db.session.commit()
-    return jsonify({'id': topic.id, 'title': topic.title, 'content': topic.content, 'createdAt': topic.createdAt, 'comments': []})
+    return jsonify({'msg': 'User created successfully'})
 
-# Define routes for comments
-@app.route('/posts', methods=['POST'])
-def create_post():
-    # Create a new comment
-    post_content = request.json.get('content')
-    thread_id = request.json.get('thread_id')
-    post = Post(content=post_content, thread_id=thread_id)
-    db.session.add(post)
-    db.session.commit()
-    return jsonify({'id': post.id, 'content': post.content, 'createdAt': post.createdAt})
-# Define routes for Users
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'GET':
-        return send_from_directory('Client/build', 'index.html')
-    elif request.method == 'POST':
-        username = request.form.get('username', None)
-        password = request.form.get('password', None)
-        user = User.query.filter_by(username=username).first()
-        if user and user.check_password(password):
+    username = request.json.get('username')
+    password = request.json.get('password')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        if check_password_hash(user.password, password):
             access_token = create_access_token(identity=username)
             return jsonify({'access_token': access_token})
-        return jsonify({'msg': 'Bad username or password'}), 401
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'GET':
-        return send_from_directory('Client/build', 'index.html')
-    elif request.method == 'POST':
-        try:
-            username = request.form.get('username', None)
-            password = request.form.get('password', None)
-            if not username or not password:
-                return jsonify({'msg': 'Username and password are required'}), 400
-            user = User.query.filter_by(username=username).first()
-            if user:
-                return jsonify({'msg': 'Username already exists'}), 400
-            new_user = User(username, password)
-            db.session.add(new_user)
-            db.session.commit()
-            return jsonify({'message': 'User created successfully'})
-        except Exception as e:
-            print(f'An error occurred: {e}')
-            return jsonify({'msg': f'An error occurred: {e}'}), 500
+        else:
+            return jsonify({'msg': 'Bad password'}), 401
+    else:
+        return jsonify({'msg': 'Bad username'}), 401
 
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    return jsonify({'logged_in_as': current_user})
+    return jsonify({'msg': f'Hello, {current_user}!'})
 
-# Define routes for categories
-@app.route('/categories', methods=['GET'])
-def get_categories():
-    categories = Category.query.all()
-    return jsonify([category.name for category in categories])
+# routes for topics and threads
 
-@app.route('/categories', methods=['POST'])
-def create_category():
-    category_name = request.json.get('name')
-    category_description = request.json.get('description')
-    category = Category(name=category_name, description=category_description)
-    db.session.add(category)
-    db.session.commit()
-    return jsonify({'message': 'Category created successfully'})
-
-# Define routes for threads
-@app.route('/threads', methods=['GET'])
-def get_threads():
-    threads = Thread.query.all()
-    return jsonify([thread.title for thread in threads])
-
-@app.route('/threads', methods=['POST'])
-def create_thread():
-  try:
-    thread_title = request.json.get('title')
-    thread_content = request.json.get('content')
-    category_id = request.json.get('category_id')
-    thread = Thread(title=thread_title, content=thread_content, category_id=category_id)
-    db.session.add(thread)
-    db.session.commit()
-    return jsonify({'id': thread.id, 'title': thread.title, 'content': thread.content, 'category_id': thread.category_id})
-  except Exception as e:
-    return jsonify({'error': str(e)}), 500
-
-# Define routes for posts
-@app.route('/posts', methods=['GET', 'POST'])
-def handle_posts():
+@app.route('/topics', methods=['GET', 'POST'])
+@jwt_required()
+def topics():
     if request.method == 'GET':
-        posts = Post.query.all()
-        return jsonify([post.content for post in posts])
+        topics = Topic.query.all()
+        return jsonify([{'id': topic.id, 'title': topic.title, 'content': topic.content, 'created_at': topic.created_at} for topic in topics])
     elif request.method == 'POST':
-        # Create a new post
-        post_content = request.json.get('content')
-        thread_id = request.json.get('thread_id')
-        post = Post(content=post_content, thread_id=thread_id)
-        db.session.add(post)
+        topic = Topic(title=request.json['title'], content=request.json['content'])
+        db.session.add(topic)
         db.session.commit()
-        return jsonify({'id': post.id, 'content': post.content, 'createdAt': post.createdAt})
-if __name__ == "__main__":
+        return jsonify({'id': topic.id, 'title': topic.title, 'content': topic.content, 'created_at': topic.created_at})
+
+
+@app.route('/threads', methods=['GET', 'POST'])
+@jwt_required()
+def threads():
+    if request.method == 'POST':
+        if 'title' in request.json and 'content' in request.json and 'user_id' in request.json:
+            thread = Thread(title=request.json['title'], content=request.json['content'], user_id=request.json['user_id'])
+            db.session.add(thread)
+            db.session.commit()
+            return jsonify({'id': thread.id, 'title': thread.title, 'content': thread.content, 'user_id': thread.user_id})
+        else:
+            return jsonify({'error': 'Missing required fields'}), 400
+
+# Routes for comments
+
+@app.route('/threads/<int:thread_id>/comments', methods=['POST'])
+@jwt_required()
+def create_comment(thread_id):
+    thread = Thread.query.get(thread_id)
+    if thread is None:
+        return jsonify({'msg': 'Thread not found'}), 404
+    content = request.json.get('content')
+    if content is None:
+        return jsonify({'msg': 'Content is required'}), 400
+    user = User.query.filter_by(username=get_jwt_identity()).first()
+    if user is None:
+        return jsonify({'msg': 'User not found'}), 404
+    comment = Comment(content=content, thread_id=thread_id, user_id=user.id)
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify(comment.to_dict())
+
+@app.route('/threads/<int:thread_id>/comments', methods=['GET'])
+def get_comments(thread_id):
+    thread = Thread.query.get(thread_id)
+    if thread is None:
+        return jsonify({'msg': 'Thread not found'}), 404
+    comments = Comment.query.filter_by(thread_id=thread_id).all()
+    return jsonify([comment.to_dict() for comment in comments])
+
+if __name__ == '__main__':
     with app.app_context():
+        db.drop_all()
         db.create_all()
-    try:
-        app.run(debug=True)
-    except Exception as e: 
-        print(f"An error occurred: {e}")
+    app.run(debug=True)

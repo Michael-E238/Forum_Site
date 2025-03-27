@@ -22,39 +22,44 @@ const ActionAdventurePage: React.FC = () => {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [commentContent, setCommentContent] = useState('');
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+  const [authorId, setAuthorId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/action-adventure/topics')
+    fetch('/threads')
      .then(response => response.json())
-     .then(data => setTopics(data));
+     .then(data => {
+        setTopics(data);
+      });
   }, []);
 
   const handleSubmitTopic = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    fetch('/action-adventure/topics', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ title: topicTitle, content: topicContent })
-    })
-     .then(response => response.json())
-     .then(data => {
-        setTopics([...topics, data]);
-        setTopicTitle('');
-        setTopicContent('');
-      });
-  };
-
-  const handleSubmitComment = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (selectedTopic) {
-      fetch('/posts', {
+    if (authorId) {
+      fetch('/threads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ content: commentContent, thread_id: selectedTopic.id })
+        body: JSON.stringify({ title: topicTitle, content: topicContent, user_id: authorId })
+      })
+       .then(response => response.json())
+       .then(data => {
+          setTopics([...topics, data]);
+          setTopicTitle('');
+          setTopicContent('');
+        });
+    }
+  };
+
+  const handleSubmitComment = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (selectedTopic && authorId) {
+      fetch('/threads/' + selectedTopic.id + '/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: commentContent, thread_id: selectedTopic.id, user_id: authorId })
       })
        .then(response => response.json())
        .then(data => {
@@ -72,6 +77,10 @@ const ActionAdventurePage: React.FC = () => {
 
   const handleSelectTopic = (topic: Topic) => {
     setSelectedTopic(topic);
+  };
+
+  const handleSetAuthorId = (authorId: number) => {
+    setAuthorId(authorId);
   };
 
   return (
@@ -92,9 +101,17 @@ const ActionAdventurePage: React.FC = () => {
               <Form.Label>Topic Content:</Form.Label>
               <Form.Control
                 as="textarea"
-                rows={5} 
+                rows={5}
                 value={topicContent}
                 onChange={(event) => setTopicContent(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="authorId">
+              <Form.Label>Author ID:</Form.Label>
+              <Form.Control
+                type="number"
+                value={authorId || ''}
+                onChange={(event) => handleSetAuthorId(parseInt(event.target.value))}
               />
             </Form.Group>
             <Button variant="primary" type="submit">

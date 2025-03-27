@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "concurrently \"cd server &&.\\.venv\\Scripts\\activate && python app.py\" \"wait-on tcp:5000 && cd client && bun run dev\"",
+    "client": "cd client && bun run dev",
     "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
-    "lint": "eslint .",
+    "lint": "eslint.",
     "preview": "vite preview"
   },
   "dependencies": {
