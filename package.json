@@ -12,7 +12,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "cd client && bun run build",
     "install": "cd server && pip3 install -r requirements.txt && cd ../client && bun i",
     "dev": "concurrently \"cd server && python3 app.py\" \"wait-on tcp:5000 && cd client && bun run dev\"",
     "start": "bun run dev",

@@ -14,7 +14,7 @@ The "Welcome to the Old Internet" App is a full-stack web application designed t
 ### 2. Forum Management
 - **Retrieve Specific Threads**: Fetches a specific thread by selecting the corresponding topic.
 - **Add Forum Posts**: Create new posts to add to the specific thread in which they are relevant.
-- **Compartamentalizing Unique Threads**: Creating clear distinctions between multiple threads to prevent overlap from unrelated discussion topics.
+- **Categorizing Unique Threads**: Creating clear distinctions between multiple threads to prevent overlap from unrelated discussion topics.
 
 ### 3. Security
 - **Password Encryption**: All passwords are hashed using `bcrypt`.
