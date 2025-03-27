@@ -23,7 +23,7 @@ def action_adventure():
 def get_action_adventure_topics():
     # Query the database for topics related to action-adventure games
     topics = Topic.query.all()
-    return jsonify([topic.title for topic in topics])
+    return jsonify([{'id': topic.id, 'title': topic.title, 'content': topic.content, 'createdAt': topic.createdAt, 'comments': []} for topic in topics])
 
 @app.route('/action-adventure/topics', methods=['POST'])
 def create_action_adventure_topic():
@@ -33,8 +33,18 @@ def create_action_adventure_topic():
     topic = Topic(title=topic_title, content=topic_content)
     db.session.add(topic)
     db.session.commit()
-    return jsonify({'message': 'Topic created successfully'})
+    return jsonify({'id': topic.id, 'title': topic.title, 'content': topic.content, 'createdAt': topic.createdAt, 'comments': []})
 
+# Define routes for comments
+@app.route('/posts', methods=['POST'])
+def create_post():
+    # Create a new comment
+    post_content = request.json.get('content')
+    thread_id = request.json.get('thread_id')
+    post = Post(content=post_content, thread_id=thread_id)
+    db.session.add(post)
+    db.session.commit()
+    return jsonify({'id': post.id, 'content': post.content, 'createdAt': post.createdAt})
 # Define routes for Users
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -99,29 +109,31 @@ def get_threads():
 
 @app.route('/threads', methods=['POST'])
 def create_thread():
+  try:
     thread_title = request.json.get('title')
     thread_content = request.json.get('content')
     category_id = request.json.get('category_id')
     thread = Thread(title=thread_title, content=thread_content, category_id=category_id)
     db.session.add(thread)
     db.session.commit()
-    return jsonify({'message': 'Thread created successfully'})
+    return jsonify({'id': thread.id, 'title': thread.title, 'content': thread.content, 'category_id': thread.category_id})
+  except Exception as e:
+    return jsonify({'error': str(e)}), 500
 
 # Define routes for posts
-@app.route('/posts', methods=['GET'])
-def get_posts():
-    posts = Post.query.all()
-    return jsonify([post.content for post in posts])
-
-@app.route('/posts', methods=['POST'])
-def create_post():
-    post_content = request.json.get('content')
-    thread_id = request.json.get('thread_id')
-    post = Post(content=post_content, thread_id=thread_id)
-    db.session.add(post)
-    db.session.commit()
-    return jsonify({'message': 'Post created successfully'})
-
+@app.route('/posts', methods=['GET', 'POST'])
+def handle_posts():
+    if request.method == 'GET':
+        posts = Post.query.all()
+        return jsonify([post.content for post in posts])
+    elif request.method == 'POST':
+        # Create a new post
+        post_content = request.json.get('content')
+        thread_id = request.json.get('thread_id')
+        post = Post(content=post_content, thread_id=thread_id)
+        db.session.add(post)
+        db.session.commit()
+        return jsonify({'id': post.id, 'content': post.content, 'createdAt': post.createdAt})
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

@@ -1,5 +1,6 @@
-import React, { useState } from'react';
-import { Row, Col, Card, Container } from'react-bootstrap';
+import React from'react';
+import { Container, Row, Col, Card } from'react-bootstrap';
+import { Link } from'react-router-dom';
 
 interface Thread {
   id: number;
@@ -11,63 +12,57 @@ interface Thread {
 }
 
 const threadsData: Thread[] = [
-    {
-        id: 1,
-        title: 'Action/Adventure Games',
-        content: 'Discuss your favorite action/adventure games here!',
-        genre: 'Action/Adventure',
-        color: '#FF9900',
-        url: '/threads/1',
-      },
-      {
-        id: 2,
-        title: 'Role-Playing Games (RPGs)',
-        content: 'Talk about your favorite RPGs and share your experiences!',
-        genre: 'RPG',
-        color: '#0099CC',
-        url: '/threads/2',
-      },
-      {
-        id: 3,
-        title: 'First-Person Shooter (FPS) Games',
-        content: 'Discuss your favorite FPS games and strategies!',
-        genre: 'FPS',
-        color: '#FF0000',
-        url: '/threads/3',
-      },
-      {
-        id: 4,
-        title: 'Sports Games',
-        content: 'Talk about your favorite sports games and teams!',
-        genre: 'Sports',
-        color: '#00CC00',
-        url: '/threads/4',
-      },
-      {
-        id: 5,
-        title: 'Strategy Games',
-        content: 'Discuss your favorite strategy games and tactics!',
-        genre: 'Strategy',
-        color: '#CCCC00',
-        url: '/threads/5',
-      },
-      {
-        id: 6,
-        title: 'Simulation Games',
-        content: 'Talk about your favorite simulation games and experiences!',
-        genre: 'Simulation',
-        color: '#6600CC',
-        url: '/threads/6',
-      },
+  {
+    id: 1,
+    title: 'Action/Adventure Games',
+    content: 'Discuss your favorite action/adventure games here!',
+    genre: 'Action/Adventure',
+    color: '#FF9900',
+    url: '/action-adventure',
+  },
+  {
+    id: 2,
+    title: 'Role-Playing Games (RPGs)',
+    content: 'Talk about your favorite RPGs and share your experiences!',
+    genre: 'RPG',
+    color: '#0099CC',
+    url: '/threads/2',
+  },
+  {
+    id: 3,
+    title: 'First-Person Shooter (FPS) Games',
+    content: 'Discuss your favorite FPS games and strategies!',
+    genre: 'FPS',
+    color: '#FF0000',
+    url: '/threads/3',
+  },
+  {
+    id: 4,
+    title: 'Sports Games',
+    content: 'Talk about your favorite sports games and teams!',
+    genre: 'Sports',
+    color: '#00CC00',
+    url: '/threads/4',
+  },
+  {
+    id: 5,
+    title: 'Strategy Games',
+    content: 'Discuss your favorite strategy games and tactics!',
+    genre: 'Strategy',
+    color: '#CCCC00',
+    url: '/threads/5',
+  },
+  {
+    id: 6,
+    title: 'Simulation Games',
+    content: 'Talk about your favorite simulation games and experiences!',
+    genre: 'Simulation',
+    color: '#6600CC',
+    url: '/threads/6',
+  },
 ];
 
-const Home: React.FC = () => {
-  const [selectedThread, setSelectedThread] = useState<Thread | null>(null);
-
-  const handleThreadClick = (thread: Thread) => {
-    setSelectedThread(thread);
-  };
-
+function Home() {
   return (
     <Container fluid>
       <Row className="justify-content-center">
@@ -81,9 +76,9 @@ const Home: React.FC = () => {
             <Card style={{ backgroundColor: thread.color, borderColor: thread.color }}>
               <Card.Body>
                 <Card.Title style={{ color: 'white' }}>
-                  <a href="#" onClick={() => handleThreadClick(thread)}>
+                  <Link to={thread.url}>
                     {thread.title}
-                  </a>
+                  </Link>
                 </Card.Title>
                 <Card.Text style={{ color: 'white' }}>{thread.content.substring(0, 100)}...</Card.Text>
               </Card.Body>
@@ -91,20 +86,8 @@ const Home: React.FC = () => {
           </Col>
         ))}
       </Row>
-      {selectedThread && (
-        <Row>
-          <Col xs={12}>
-            <Card>
-              <Card.Body>
-                <Card.Title style={{ color: 'white' }}>{selectedThread.title}</Card.Title>
-                <Card.Text style={{ color: 'white' }}>{selectedThread.content}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
     </Container>
   );
-};
+}
 
 export default Home;
